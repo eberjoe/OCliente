@@ -5,6 +5,10 @@
  */
 package ocliente;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author old_adam
@@ -16,6 +20,14 @@ public class OCliente {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        try {
+            Servidor.getInstance().connect("Valmor", "192.168.3.19", 8910);
+            
+            Servidor.getInstance().enviarMensagemPara("Luiz", "Olah");
+        } 
+        catch (IOException ex) {
+            System.out.println("Erro" + ex.getMessage());
+        }
         
     }
     

@@ -4,8 +4,8 @@
 package ocliente;
 
 import java.io.DataOutputStream;
-import java.io.IOError;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 
 /**
@@ -93,6 +93,14 @@ public class Servidor extends Thread {
         } catch (IOException e) {
 
         }
+    }
+
+    void enviarMensagemPara(String usuario, String texto) throws IOException{
+        OutputStream out = maquinaRemota.getOutputStream();
+        DataOutputStream dout = new DataOutputStream(out);
+        //
+        dout.writeUTF(usuario);
+        dout.writeUTF(texto);
     }
 
 }//fim da classe.
