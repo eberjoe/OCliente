@@ -21,7 +21,7 @@ public class OCliente {
      */
     public static void main(String[] args) {
         try {
-            Servidor.getInstance().connect("Valmor", "192.168.3.19", 8910);
+            Servidor.getInstance().connect("Valmor", "192.168.6.78", 8910);
             
             Servidor.getInstance().enviarMensagemPara("Luiz", "Olah");
         } 

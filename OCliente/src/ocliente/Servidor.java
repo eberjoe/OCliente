@@ -99,8 +99,8 @@ public class Servidor extends Thread {
         OutputStream out = maquinaRemota.getOutputStream();
         DataOutputStream dout = new DataOutputStream(out);
         //
-        dout.writeUTF(usuario);
-        dout.writeUTF(texto);
+        dout.writeUTF(usuario+ "|" + texto); // "usuario|texto"
+        
     }
 
 }//fim da classe.
