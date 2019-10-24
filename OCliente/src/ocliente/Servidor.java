@@ -3,9 +3,12 @@
  */
 package ocliente;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.Socket;
 
 /**
@@ -79,13 +82,13 @@ public class Servidor extends Thread {
     
     /**
      * Servidor eh uma classe filha de Thread, vamos utilizar o metodo run() para
-     * periodicamente ler e enviar dados para a maquina remota.
+     * periodicamente ler dados da maquina remota.
      */
     public void run() {
         try {
             // Enviando o nome do usuario para a maquina remota.
-            DataOutputStream dout = new DataOutputStream(maquinaRemota.getOutputStream());
-            dout.writeUTF(nomeDoUsuario);
+            PrintStream dout = new PrintStream(maquinaRemota.getOutputStream());
+            dout.println(nomeDoUsuario);
 
             do {
 
@@ -97,10 +100,11 @@ public class Servidor extends Thread {
 
     void enviarMensagemPara(String usuario, String texto) throws IOException{
         OutputStream out = maquinaRemota.getOutputStream();
-        DataOutputStream dout = new DataOutputStream(out);
-        //
-        dout.writeUTF(usuario+ "|" + texto); // "usuario|texto"
+        PrintStream ps = new PrintStream(out);
         
+        //
+        String message = usuario+"-> "+texto;
+        ps.println(message);
     }
 
 }//fim da classe.
