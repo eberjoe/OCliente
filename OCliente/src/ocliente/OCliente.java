@@ -20,14 +20,10 @@ public class OCliente {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            Servidor.getInstance().connect("Valmor", "10.0.0.107", 8910);
-            
-            Servidor.getInstance().enviarMensagemPara("Luiz", "Olah");
-        } 
-        catch (IOException ex) {
-            System.out.println("Erro" + ex.getMessage());
-        }
+        JanelaPrincipal janela;
+        janela = new JanelaPrincipal();
+        
+        janela.setVisible(true);
         
     }
     
