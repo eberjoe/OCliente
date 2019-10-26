@@ -4,9 +4,12 @@
 package ocliente;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -40,6 +43,10 @@ public class Servidor extends Thread {
      * espera esta informacao para poder adicionar na lista de usuarios.
      */
     private String nomeDoUsuario;
+    /**
+     * Objeto que vai ser chamado quando uma nova mensagem chegar.
+     */
+    private ObservadorDeMensagem observadorDeMensagem;
 
     /**
      * Construtor eh privado porque vai existir apenas um objeto do tipo
@@ -85,14 +92,38 @@ public class Servidor extends Thread {
         //
         this.start();
     }
+    
+    public void setObservadorDeMensagem(ObservadorDeMensagem observador){
+        this.observadorDeMensagem = observador;
+    }
 
     /**
      * Servidor eh uma classe filha de Thread, vamos utilizar o metodo run()
      * para periodicamente ler dados da maquina remota.
      */
     public void run() {
+        String mensagem = "";
+        BufferedReader reader = null;
+        //Criando o Data Input para ler a mensagem enviada pelo OCliente.
+        try{
+            InputStream inp = maquinaRemota.getInputStream();
+            InputStreamReader iRead = new InputStreamReader(inp);
+            reader = new BufferedReader(iRead);
+        }catch(Exception e) {
+            System.out.println("Erro criando BufferedReader..." + e.getMessage());
+        }
+        
         do {
-
+            if(reader != null) {
+                try{
+                    mensagem = reader.readLine();
+                    observadorDeMensagem.onMessageArrive(mensagem);
+                }
+                catch(IOException | NullPointerException x) {
+                     System.out.println("Erro lendo mensagem..." + x.getMessage());
+                }
+            }
+            
         } while (true);
 
     }

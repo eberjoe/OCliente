@@ -6,20 +6,22 @@
 package ocliente;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author udesc
  */
-public class JanelaPrincipal extends javax.swing.JFrame {
+public class JanelaPrincipal 
+        extends javax.swing.JFrame 
+        implements ObservadorDeMensagem{
 
     /**
      * Creates new form JanelaPrincipal
      */
     public JanelaPrincipal() {
         initComponents();
+        // Cadastrar a janela como observador de mensagens.
+        Servidor.getInstance().setObservadorDeMensagem(this);
     }
 
     /**
@@ -142,7 +144,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         
         try {
             
-            Servidor.getInstance().connect(nomeDoUsuario, "192.168.6.78", 8910);
+            Servidor.getInstance().connect(nomeDoUsuario, "192.168.3.205", 8910);
             txtSaida.append("Conectamos!");
             
         } catch (IOException ex) {
@@ -212,4 +214,9 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField txtTexto;
     private javax.swing.JTextField txtUsuarioDestino;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onMessageArrive(String message) {
+        txtSaida.append(message + "\n");
+    }
 }
