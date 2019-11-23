@@ -11,5 +11,4 @@ package ocliente;
  */
 public interface ObservadorDeMensagem {
     public void onMessageArrive(String message);
-    
 }

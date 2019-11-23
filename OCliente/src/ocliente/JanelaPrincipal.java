@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ocliente;
 
+package ocliente;
+import java.io.PrintStream;
 import java.io.IOException;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,14 +18,13 @@ import java.io.IOException;
 public class JanelaPrincipal 
         extends javax.swing.JFrame 
         implements ObservadorDeMensagem{
-
+    
     /**
      * Creates new form JanelaPrincipal
      */
     public JanelaPrincipal() {
         initComponents();
-        // Cadastrar a janela como observador de mensagens.
-        Servidor.getInstance().setObservadorDeMensagem(this);
+
     }
 
     /**
@@ -33,149 +36,76 @@ public class JanelaPrincipal
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        botaoConectar = new javax.swing.JButton();
-        txtTexto = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        botaoEnviar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtSaida = new javax.swing.JTextArea();
-        txtNomeUsuario = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txtUsuarioDestino = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         listaUsuariosConectados = new javax.swing.JList<>();
+        botaoDesc = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        botaoConectar.setText("Conectar");
-        botaoConectar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoConectarActionPerformed(evt);
-            }
-        });
-
-        txtTexto.setText("Digitar mensagem");
-
-        jLabel1.setText("Digite sua mensagem abaixo:");
-
-        botaoEnviar.setText("Enviar");
-        botaoEnviar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoEnviarActionPerformed(evt);
-            }
-        });
+        setResizable(false);
 
         txtSaida.setColumns(20);
         txtSaida.setRows(5);
         jScrollPane1.setViewportView(txtSaida);
 
-        txtNomeUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeUsuarioActionPerformed(evt);
+        listaUsuariosConectados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listaUsuariosConectados.setToolTipText("");
+        listaUsuariosConectados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaUsuariosConectadosMouseClicked(evt);
             }
         });
-
-        jLabel2.setText("Usuario");
-
-        jLabel3.setText("Digite o nome do usuario de destino abaixo");
-
-        listaUsuariosConectados.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(listaUsuariosConectados);
+
+        botaoDesc.setText("DESCONECTAR");
+        botaoDesc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoDescActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(botaoConectar)
-                                    .addGap(77, 77, 77)
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtNomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(69, 69, 69)))
-                    .addComponent(jLabel3)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtUsuarioDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(botaoEnviar)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(botaoDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botaoConectar)
-                    .addComponent(txtNomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1)
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(botaoEnviar)
-                                    .addComponent(txtUsuarioDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botaoDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botaoConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConectarActionPerformed
-        System.out.println("Botao Conectar Pressionado.");
-        String nomeDoUsuario = txtNomeUsuario.getText();
-        
-        try {
-            
-            Servidor.getInstance().connect(nomeDoUsuario, "192.168.6.78", 8910);
-            txtSaida.append("Conectamos!\n");
-            
-        } catch (IOException ex) {
-            txtSaida.append("Erro ao conectar\n");
+    private void listaUsuariosConectadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaUsuariosConectadosMouseClicked
+        if (evt.getClickCount() == 2 && listaUsuariosConectados.getSelectedValue() != null) {
+            String conversaCom = listaUsuariosConectados.getSelectedValue();
+            System.out.println("Clicou no usuário " + conversaCom);
+            JanelaChat jM = new JanelaChat();
+            jM.setTitle(conversaCom);
+            jM.setVisible(true);
         }
-    }//GEN-LAST:event_botaoConectarActionPerformed
+    }//GEN-LAST:event_listaUsuariosConectadosMouseClicked
 
-    private void txtNomeUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeUsuarioActionPerformed
-
-    private void botaoEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEnviarActionPerformed
-        String texto = txtTexto.getText();
-        String usuario = txtUsuarioDestino.getText();
-        try {
-            Servidor.getInstance().enviarMensagemPara(usuario, texto);
-            txtSaida.append(usuario + "->" + texto);
-        } catch (IOException ex) {
-          txtSaida.append("Erro ao enviar mensagem");
-        }
-    }//GEN-LAST:event_botaoEnviarActionPerformed
+    private void botaoDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoDescActionPerformed
+        this.setVisible(false);
+    }//GEN-LAST:event_botaoDescActionPerformed
 
     /**
      * @param args the command line arguments
@@ -213,18 +143,11 @@ public class JanelaPrincipal
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoConectar;
-    private javax.swing.JButton botaoEnviar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton botaoDesc;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JList<String> listaUsuariosConectados;
-    private javax.swing.JTextField txtNomeUsuario;
+    public javax.swing.JList<String> listaUsuariosConectados;
     private javax.swing.JTextArea txtSaida;
-    private javax.swing.JTextField txtTexto;
-    private javax.swing.JTextField txtUsuarioDestino;
     // End of variables declaration//GEN-END:variables
 
     @Override

@@ -93,6 +93,7 @@ public class Servidor extends Thread {
         this.start();
     }
     
+    
     public void setObservadorDeMensagem(ObservadorDeMensagem observador){
         this.observadorDeMensagem = observador;
     }
@@ -127,7 +128,7 @@ public class Servidor extends Thread {
         } while (true);
 
     }
-
+    
     void enviarMensagemPara(String usuario, String texto) throws IOException {
         OutputStream out = maquinaRemota.getOutputStream();
         PrintStream ps = new PrintStream(out);
@@ -135,5 +136,9 @@ public class Servidor extends Thread {
         String message = usuario + "-> " + texto;
         ps.println(message);
     }
+    
+    public Socket getMaquinaRemota() {
+    return this.maquinaRemota;
+}
 
 }//fim da classe.
