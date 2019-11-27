@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author old_adam
  */
 public class OCliente {
-    public static String ip = "192.168.0.103";
+    public static String ip = "192.168.0.113";
     public static int porta = 5353;
 
     /**

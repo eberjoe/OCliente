@@ -156,6 +156,8 @@ public class JanelaPrincipal
         if(array[0].equalsIgnoreCase("servidor")) {
             listaUsuariosConectados.setListData(array[2].split(","));
         }
-        txtSaida.append(message + "\n");
+        if(!array[0].equalsIgnoreCase(this.getTitle())) {
+            txtSaida.append(message + "\n");
+        }
     }
 }

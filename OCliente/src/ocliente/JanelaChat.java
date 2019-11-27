@@ -11,7 +11,9 @@ import java.io.IOException;
  *
  * @author eberj
  */
-public class JanelaChat extends javax.swing.JFrame {
+public class JanelaChat
+        extends javax.swing.JFrame
+        implements ObservadorDeMensagem {
 
     /**
      * Creates new form JanelaChat
@@ -98,10 +100,10 @@ public class JanelaChat extends javax.swing.JFrame {
 
     private void botaoEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEnviarActionPerformed
         String texto = txtTexto.getText();
-        String usuario = this.getTitle();
+        String usuario = "Você enviou";
         try {
             Servidor.getInstance().enviarMensagemPara(usuario, texto);
-            txtSaida.append(usuario + "->" + texto);
+            txtSaida.append(usuario + "->" + texto + "\n");
         } catch (IOException ex) {
           txtSaida.append("Erro ao enviar mensagem");
         }
@@ -149,4 +151,8 @@ public class JanelaChat extends javax.swing.JFrame {
     private javax.swing.JTextArea txtSaida;
     private javax.swing.JTextField txtTexto;
     // End of variables declaration//GEN-END:variables
+    @Override
+    public void onMessageArrive(String message) {
+        txtSaida.append(message + "\n");
+    }
 }
