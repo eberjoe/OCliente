@@ -86,9 +86,9 @@ public class JanelaLogin extends javax.swing.JFrame {
             Servidor.getInstance().connect(nomeDoUsuario, OCliente.ip, OCliente.porta);
             System.out.println("Conectado!");
             JanelaPrincipal jP = new JanelaPrincipal();
-            Servidor.getInstance().setObservadorDeMensagem(jP);
             jP.setVisible(true);
             jP.setTitle(nomeDoUsuario);
+            Servidor.getInstance().setObservadorDeMensagem(jP);
             this.setVisible(false);
             
         } catch (IOException ex) {

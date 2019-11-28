@@ -8,6 +8,7 @@ package ocliente;
 import java.io.PrintStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class JanelaPrincipal 
         extends javax.swing.JFrame 
-        implements ObservadorDeMensagem{
+        implements ObservadorDeMensagem {
     
     /**
      * Creates new form JanelaPrincipal
@@ -100,6 +101,7 @@ public class JanelaPrincipal
             JanelaChat jM = new JanelaChat();
             jM.setTitle(conversaCom);
             jM.setVisible(true);
+            Servidor.getInstance().setObservadorDeMensagem(jM);
         }
     }//GEN-LAST:event_listaUsuariosConectadosMouseClicked
 
@@ -152,12 +154,16 @@ public class JanelaPrincipal
 
     @Override
     public void onMessageArrive(String message) {
-        String [] array = message.split("->");
+        String[] array = message.split("->");
         if(array[0].equalsIgnoreCase("servidor")) {
-            listaUsuariosConectados.setListData(array[2].split(","));
+            Vector<String> lista = new Vector<>();
+            for (String e: array[2].split(",")) {
+                if (!e.equals(this.getTitle()))
+                    lista.add(e);
+            }
+            listaUsuariosConectados.setListData(lista);
         }
-        if(!array[0].equalsIgnoreCase(this.getTitle())) {
+        if(!array[0].equalsIgnoreCase(this.getTitle()))
             txtSaida.append(message + "\n");
-        }
     }
 }

@@ -100,10 +100,10 @@ public class JanelaChat
 
     private void botaoEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEnviarActionPerformed
         String texto = txtTexto.getText();
-        String usuario = "Você enviou";
+        String usuario = this.getTitle();
         try {
             Servidor.getInstance().enviarMensagemPara(usuario, texto);
-            txtSaida.append(usuario + "->" + texto + "\n");
+            txtSaida.append("Você enviou ->" + texto + "\n");
         } catch (IOException ex) {
           txtSaida.append("Erro ao enviar mensagem");
         }
